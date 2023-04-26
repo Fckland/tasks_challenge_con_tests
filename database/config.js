@@ -5,6 +5,7 @@ const connectDB = async () => {
     await mongoose.connect(process.env.DATABASE_CNN, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      
     });
     console.log("MongoDB Connected...");
   } catch (err) {
@@ -13,4 +14,17 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+const disconnectDB = async () => {
+  try {
+    await mongoose.disconnect();
+    console.log("MongoDB disconnected...");
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
+
+module.exports = {
+  connectDB,
+  disconnectDB,
+};

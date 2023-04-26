@@ -25,7 +25,6 @@ router.get("/", getUsers);
 router.post(
   "/",
   [
-    jwt_validator,
     check("name", "Name required").not().isEmpty(),
     check("mail", "Email required").not().isEmpty(),
     check("mail", "Email not valid").isEmail(),

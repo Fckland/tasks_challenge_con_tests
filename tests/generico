@@ -27,3 +27,32 @@
 
 //   // ... more test cases for other endpoints
 // });
+
+// let server;
+
+//     beforeAll((done) => {
+//         server = appi.listen(3000, () => done());
+//     }, 10000);
+
+//     afterAll((done) => {
+//         closeServer(server).then(() => done());
+//     });
+
+//     test('should return "Hello world', done => {
+//         request(appi)
+//             .post('/hola')
+//             .send({
+//                 'mail': 'test@example.com',
+//                 'password': 'testpassword'
+//             })
+//             .then(response => {
+//                 expect(response.statusCode).toBe(200);
+//                 expect(response.body).toEqual({msg: 'hola' });
+//                 done();
+//             })
+//             .catch(error => done(error));
+//     });
+// });
+
+// const closeServer = (server) => {
+//   return new Promise(resolve => server.close(resolve));

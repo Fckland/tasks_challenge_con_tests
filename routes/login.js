@@ -7,7 +7,7 @@ const router = Router();
 
 router.post('/',[
     check('mail','Is not a valid email').isEmail(),
-    check('password','Is not a valid password').not().isEmpty(),
+    check('password','Empty password').not().isEmpty(),
     validation
 ], 
 authentication);

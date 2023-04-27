@@ -6,6 +6,7 @@ const authentication = require('../controllers/authentication');
 const router = Router();
 
 router.post('/',[
+    check('mail','Email required').not().isEmpty(),
     check('mail','Is not a valid email').isEmail(),
     check('password','Empty password').not().isEmpty(),
     validation

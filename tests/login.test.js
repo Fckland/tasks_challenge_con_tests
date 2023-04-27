@@ -5,6 +5,20 @@ const Server = require("../models/server");
 describe("POST /login", () => {
   let app;
   let server;
+  const errors = [
+    {
+      type: "field",
+      msg: "Email required",
+      path: "mail",
+      location: "body",
+    },
+    {
+      type: "field",
+      msg: "Is not a valid email",
+      path: "mail",
+      location: "body",
+    },
+  ];
 
   beforeAll(() => {
     server = new Server();
@@ -54,6 +68,47 @@ describe("POST /login", () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         msg: "Usuario no encontrado",
+      })
+    );
+  });
+  test("Should respond with a message Is not a valid email", async () => {
+    const user = {
+      mail: "testgmail.com",
+      password: "12345678",
+    };
+    const response = await request(app).post("/login").send(user);
+
+    expect(response.status).toBe(400);
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ msg: "Is not a valid email" }),
+      ])
+    );
+  });
+  test("Should respond with a message Empty password", async () => {
+    const user = {
+      mail: "testgmail.com",
+    };
+    const response = await request(app).post("/login").send(user);
+
+    expect(response.status).toBe(400);
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ msg: "Empty password" }),
+      ])
+    );
+  });
+  test("Should respond with a message Email required", async () => {
+    const user = {
+      password: "12345678",
+    };
+    const response = await request(app).post("/login").send(user);
+
+    expect(response.status).toBe(400);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        errors,
       })
     );
   });

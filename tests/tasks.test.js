@@ -1,6 +1,6 @@
 const request = require("supertest");
 const Server = require("../models/server");
-const Task = require("../models/usuario");
+const Task = require("../models/task");
 
 describe("Tasks test", () => {
   let app;
@@ -9,39 +9,34 @@ describe("Tasks test", () => {
     mail: "test3@gmail.com",
     password: "12345678",
   };
-  let validID = "64481883bcf06b80d9626ac9";
-  const rand = Math.random()
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NDQ3YmE4ZDkxOWNiNWFhN2MyNzM2ZTUiLCJpYXQiOjE2ODI2MTc5NDMsImV4cCI6MTY4MjYzMjM0M30.nd6bV8Du1Pm-3il3WRZHtZTams9bXSWe8tXLFEZH4TE";
-  beforeAll(() => {
+  let validID;
+  const rand = Math.random();
+  let token;
+  beforeAll(async () => {
     server = new Server();
     app = server.app;
+    const task = await Task.findOne({ name: "TAREA6" });
+    validID = task.id;
+    const response = await request(app).post("/login").send(user);
+    token = response.body.token;
   });
-  
-  
-  
+
   afterAll(async () => {
     await server.desconectarDB();
   });
-  
+
   // Get all tasks
   test("should get all tasks", async () => {
     const response = await request(app).get("/tasks").send(user);
-    
+
     expect(response.status).toBe(200);
   });
-  
+
   // Get a task by ID
 
-
-  
   test("Should get a task if the taskID is correct and the token is valid", async () => {
-    // const task = await Task.findOne( {name:"TAREA7"} );
-    // const validIDD = task.id;
-    // console.log(task);
-
     const response = await request(app)
-      .get(`/tasks/64481883bcf06b80d9626ac9`)
+      .get(`/tasks/${validID}`)
       .set("token", `${token}`);
 
     expect(response.status).toBe(200);
@@ -59,7 +54,10 @@ describe("Tasks test", () => {
     const response = await request(app)
       .post("/tasks")
       .set("token", `${token}`)
-      .send({ name: `tareaaaaa${rand}`, description: "Hay que hacer muchas cosas" });
+      .send({
+        name: `tareaaaaa${rand}`,
+        description: "Hay que hacer muchas cosas",
+      });
     expect(response.status).toBe(200);
   });
 
@@ -82,17 +80,20 @@ describe("Tasks test", () => {
   // Update a task
   test("should succesfully update a task", async () => {
     const response = await request(app)
-     .put(`/tasks/${validID}`)
-     .set("token", `${token}`)
-     .send({ name: "tareaActualizada", description: "Hay que hacer muchas cosas" });
+      .put(`/tasks/${validID}`)
+      .set("token", `${token}`)
+      .send({
+        name: "tareaActualizada",
+        description: "Hay que hacer muchas cosas",
+      });
     expect(response.status).toBe(200);
   });
 
   // Delete a task
   test("should succesfully delete a task", async () => {
     const response = await request(app)
-    .delete(`/tasks/644a6da3a5d4662c335a4b9a`)
-    .set("token", `${token}`);
+      .delete(`/tasks/${validID}`)
+      .set("token", `${token}`);
     expect(response.status).toBe(200);
   });
 });

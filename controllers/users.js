@@ -24,7 +24,6 @@ const getUsers = async (req, res) => {
 // GET /users/:id: Retrieve a single user by ID. The user should be returned in JSON format.
 const getUserId = async (req, res) => {
   const id = req.query;
-  console.log(id);
   const user = await User.findOne(id)
 
   res.json({
@@ -56,25 +55,24 @@ const postUsers = async (req, res) => {
 // PUT /users/:id: Update a single user by ID. The request body should contain the updated user details in JSON format.
 
 
-const putUsers = (req = request, res = response) => {
-  const id = req.params.id;
-  console.log({id})
+const putUsers = async (req = request, res = response) => {
+  let _id = req.params.id;
 
   try {
     
     const { name, mail, password} = req.body;
     console.log(req.body)
     console.log(req.body.name,req.body.mail,req.body.password)
-    let user = User.findOne({id});
-    console.log(user)
+
+    let user = await User.findOne({_id});
   
-    // name!=user.name ? (user.name = name) : "";
-    // mail!=user.mail ? (user.mail = mail) : "";
-    // if (password) {
-    //   const salt = bcryptjs.genSaltSync();
-    //   const passwordEncrypted = bcryptjs.hashSync(password, salt);
-    //   password!=user.password ? (user.password = passwordEncrypted) : "";
-    // }
+    name!=user.name ? (await User.findByIdAndUpdate({_id},{name})) : "";
+    mail!=user.mail ? (await User.findByIdAndUpdate({_id},{mail})) : "";
+    if (password) {
+      const salt = bcryptjs.genSaltSync();
+      const passwordEncrypted = bcryptjs.hashSync(password, salt);
+      password!=user.password ? (await User.findByIdAndUpdate({_id},{password:passwordEncrypted})) : "";
+    }
   
     res.json({
       user,

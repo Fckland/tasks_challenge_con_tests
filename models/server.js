@@ -13,6 +13,7 @@ class Server {
     this.path = {
         login: "/login",
         tasks: "/tasks",
+        tiendaNube: "/tiendanube",
         users: "/users",
       };
 
@@ -38,6 +39,7 @@ class Server {
   routes() {
     this.app.use(this.path.login, require("../routes/login"));
     this.app.use(this.path.tasks, require("../routes/tasks"));
+    this.app.use(this.path.tiendaNube, require("../routes/tiendaNube"));
     this.app.use(this.path.users, require("../routes/users"));
   }
   listen() {

@@ -54,18 +54,37 @@ const postUsers = async (req, res) => {
 };
 
 // PUT /users/:id: Update a single user by ID. The request body should contain the updated user details in JSON format.
+
+
 const putUsers = (req = request, res = response) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
+  console.log({id})
 
-  const user = User.find((c) => c.id === id);
-  const { name, mail } = req.headers;
-
-  name ? (user.name = name) : "";
-  mail ? (user.mail = mail) : "";
-
-  res.json({
-    user,
-  });
+  try {
+    
+    const { name, mail, password} = req.body;
+    console.log(req.body)
+    console.log(req.body.name,req.body.mail,req.body.password)
+    let user = User.findOne({id});
+    console.log(user)
+  
+    // name!=user.name ? (user.name = name) : "";
+    // mail!=user.mail ? (user.mail = mail) : "";
+    // if (password) {
+    //   const salt = bcryptjs.genSaltSync();
+    //   const passwordEncrypted = bcryptjs.hashSync(password, salt);
+    //   password!=user.password ? (user.password = passwordEncrypted) : "";
+    // }
+  
+    res.json({
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+    
+  }
 };
 
 // DELETE /users/:id: Delete a single user by ID.

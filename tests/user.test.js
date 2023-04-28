@@ -50,21 +50,19 @@ describe("Tasks test", () => {
   // Should test the Put to update a specific user with a validID
   it("Should update a specific user with a validID", async () => {
     const response = await request(app)
-    .put(`/users/${validID}`)
-    .set("token", `${token}`)
-    .send({
-      name: `Testing the put number ${rand}`
-    });
+      .put(`/users/${validID}`)
+      .set("token", `${token}`)
+      .send({
+        name: `Testing the put number ${rand}`,
+      });
     expect(response.status).toBe(200);
-
   });
 
   // Should test the Delete route to delete an user
   it("Should delete an user", async () => {
     const response = await request(app)
-   .delete(`/users/${validID}`)
-   .set("token", `${token}`);
+      .delete(`/users/${validID}`)
+      .set("token", `${token}`);
     expect(response.status).toBe(200);
-
   });
 });

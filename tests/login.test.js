@@ -29,9 +29,9 @@ describe("POST /login", () => {
     await server.desconectarDB();
   });
 
-  test("Should work fine because the user exists", async () => {
+  test("Should work fine if the user exists", async () => {
     const user = {
-      mail: "test3@gmail.com",
+      mail: "test1@example.com",
       password: "12345678",
     };
     const response = await request(app).post("/login").send(user);
@@ -45,8 +45,8 @@ describe("POST /login", () => {
   });
   test("Should respond with a message of incorrect password", async () => {
     const user = {
-      mail: "test3@gmail.com",
-      password: "12345670",
+      mail: "test1@example.com",
+      password: "12345670vfdsf",
     };
     const response = await request(app).post("/login").send(user);
 
@@ -59,7 +59,7 @@ describe("POST /login", () => {
   });
   test("Should respond with a message user not found", async () => {
     const user = {
-      mail: "test@gmail.com",
+      mail: "tesfasdt@gmail.com",
       password: "12345678",
     };
     const response = await request(app).post("/login").send(user);
